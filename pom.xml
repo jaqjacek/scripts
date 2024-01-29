@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.adaptavist.pom</groupId>
+        <artifactId>scriptrunner-jira-base</artifactId>
+        <version>10</version>
+    </parent>
+
+    <groupId>pl.kodsieklepie.scripts</groupId>
+    <artifactId>scripts</artifactId>
+    <version>1.0.0</version>
+
+    <organization>
+        <name>KODSIEKLEPIE</name>
+        <url>http://www.kodsieklepie.pl/</url>
+    </organization>
+
+    <name>Scripts</name>
+    <description>Scripts for atlassian applications</description>
+    <packaging>jar</packaging>
+
+    <dependencies>
+
+
+        <dependency>
+            <groupId>com.atlassian.jira</groupId>
+            <artifactId>jira-api</artifactId>
+            <version>${jira.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.atlassian.jira</groupId>
+            <artifactId>jira-core</artifactId>
+            <version>${jira.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.sonatype.nexus.plugins/nexus-groovy-plugin -->
+<!--        <dependency>-->
+<!--            <groupId>org.sonatype.nexus.plugins</groupId>-->
+<!--            <artifactId>nexus-groovy-plugin</artifactId>-->
+<!--            <version>2.15.1-02</version>-->
+<!--            <scope>provided</scope>-->
+<!--        </dependency>-->
+        <!-- https://mvnrepository.com/artifact/org.sonatype.nexus.plugins/nexus-repository-maven -->
+<!--        <dependency>-->
+<!--            <groupId>org.sonatype.nexus.plugins</groupId>-->
+<!--            <artifactId>nexus-repository-maven</artifactId>-->
+<!--            <version>3.38.1-01</version>-->
+<!--            <scope>provided</scope>-->
+<!--        </dependency>-->
+
+        <!-- https://mvnrepository.com/artifact/org.sonatype.nexus/nexus-core -->
+<!--        <dependency>-->
+<!--            <groupId>com.atlassian.confluence</groupId>-->
+<!--            <artifactId>confluence-api</artifactId>-->
+<!--            <version>${confluence.version}</version>-->
+<!--            <scope>provided</scope>-->
+<!--        </dependency>-->
+
+<!--        <dependency>-->
+<!--            <groupId>com.atlassian.confluence</groupId>-->
+<!--            <artifactId>confluence</artifactId>-->
+<!--            <version>${confluence.version}</version>-->
+<!--            <scope>provided</scope>-->
+<!--        </dependency>-->
+
+
+<!--        <dependency>-->
+<!--            <groupId>com.atlassian.confluence</groupId>-->
+<!--            <artifactId>confluence-core</artifactId>-->
+<!--            <version>${confluence.version}</version>-->
+<!--            <scope>provided</scope>-->
+<!--        </dependency>-->
+        <dependency>
+            <groupId>com.onresolve.jira.groovy</groupId>
+            <artifactId>groovyrunner</artifactId>
+            <version>8.13.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.mashape.unirest/unirest-java -->
+        <dependency>
+            <groupId>com.mashape.unirest</groupId>
+            <artifactId>unirest-java</artifactId>
+            <version>1.4.9</version>
+        </dependency>
+
+
+
+
+        <dependency>
+            <groupId>com.atlassian.bitbucket.server</groupId>
+            <artifactId>bitbucket-api</artifactId>
+            <version>${bitbucket.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.atlassian.bitbucket.server</groupId>
+            <artifactId>bitbucket-web-common</artifactId>
+            <version>${bitbucket.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!--&lt;!&ndash; https://mvnrepository.com/artifact/org.codehaus.groovy/groovy-all &ndash;&gt;-->
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <version>3.0.8</version>
+            <type>pom</type>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.codehaus.groovy.modules.http-builder</groupId>
+            <artifactId>http-builder</artifactId>
+            <version>0.7.1</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.codehaus.groovy/groovy -->
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy</artifactId>
+            <version>3.0.8</version>
+        </dependency>
+
+        <!-- Thanks for using https://jar-download.com -->
+
+        <dependency>
+            <groupId>javax.ws.rs</groupId>
+            <artifactId>jsr311-api</artifactId>
+            <version>1.1.1</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.atlassian.servicedesk/jira-servicedesk -->
+<!--        <dependency>-->
+<!--            <groupId>com.atlassian.servicedesk</groupId>-->
+<!--            <artifactId>jira-servicedesk</artifactId>-->
+<!--            <version>7.0.1-LEGO</version>-->
+<!--            <scope>provided</scope>-->
+<!--        </dependency>-->
+
+
+        <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.atlassian.sal</groupId>
+            <artifactId>sal-api</artifactId>
+            <version>3.0.3</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.4</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.4</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+
+    <properties>
+        <jira.version>9.4.0</jira.version>
+        <confluence.version>8.5.1</confluence.version>
+        <jira.data.version>8.20.1</jira.data.version>
+        <bitbucket.version>8.14.0</bitbucket.version>
+        <scriptrunner.version>8.13.0</scriptrunner.version>
+    </properties>
+
+    <repositories>
+        <!-- Atlassian repositories will be listed above this line -->
+        <!-- Adaptavist repositories are below -->
+        <repository>
+            <id>adaptavist-external</id>
+            <url>https://nexus.adaptavist.com/content/repositories/external</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+                <checksumPolicy>warn</checksumPolicy>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+                <checksumPolicy>warn</checksumPolicy>
+            </releases>
+        </repository>
+
+        <repository>
+            <id>adaptavist-external-snapshots</id>
+            <url>https://nexus.adaptavist.com/content/repositories/external-snapshots</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+                <checksumPolicy>warn</checksumPolicy>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+                <checksumPolicy>warn</checksumPolicy>
+            </releases>
+        </repository>
+        <!-- End of Adaptavist maven repositories -->
+    </repositories>
+</project>
