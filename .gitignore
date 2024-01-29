@@ -1,0 +1,16 @@
+# User-specific files
+.idea
+*.iml
+
+# Build results
+[Tt]arget/
+src/test/
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Mac
+.DS_Store
+#remove any configuration that could be vurnable
+/groovy/bar/reposize/config/RepoConfig.groovy
