@@ -13,4 +13,4 @@ ehthumbs.db
 # Mac
 .DS_Store
 #remove any configuration that could be vurnable
-/groovy/bar/reposize/config/RepoConfig.groovy
+/groovy/reposize/config/RepoConfig.groovy

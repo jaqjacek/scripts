@@ -1,20 +1,14 @@
-package bar.reposize.utils
+package reposize.utils
 
-import bar.reposize.config.RepoConfig
-import bar.reposize.model.FileSizeHelper
-import bar.reposize.model.RepoHelper
+import reposize.config.RepoConfig
+import reposize.model.FileSizeHelper
+import reposize.model.RepoHelper
 import com.atlassian.bitbucket.repository.Repository
-import org.apache.log4j.Logger
-
 import java.util.stream.Collectors
 
 class RepoUtils {
-    public String reposPath
-    Logger log = Logger.getLogger("RepoUtils: ")
-
 
     RepoUtils() {
-        log.setLevel(org.apache.log4j.Level.DEBUG)
     }
 
     public RepoHelper createRepoHelper(Repository repo) {
@@ -25,7 +19,6 @@ class RepoUtils {
     }
 
     public void fillRepoSize(RepoHelper repo) {
-        log.warn("fillRepoSize start ${repo.repoPath}")
         File f = new File(repo.repoPath)
         Long size = folderSize(f)
         repo.setSize(String.valueOf(size))
@@ -59,11 +52,10 @@ class RepoUtils {
         def p = cmd.execute()
         List<String> lines = p.inputStream.readLines()
 
-        List<String> branchesNames = ['master']
+        List<String> branchesNames = []
         for (int i = 0; i < lines.size(); i++) {
             if (lines[i].contains("error")) continue
-            if (lines[i].contains("master")) continue
-            branchesNames.add(lines[i])
+            branchesNames.add(lines[i].replace("*", "").trim())
         }
         return branchesNames
     }
@@ -86,15 +78,17 @@ class RepoUtils {
             List<String> parts = lines[i].split("\\s") as ArrayList
             parts = parts.stream().filter({ it -> !it.isEmpty() }).collect(Collectors.toList())
 
-
-            log.warn(parts)
             Long size = Long.parseLong(parts[3])
+            //fastes way to check if file is on lfs is to check it size if its 132 then its a symlink to lfs
+            Long lfsFile = size == 132 || size == 133 ? 1 : 0;
+
             String path = lines[i].split(parts[3] + "\t")[1]
-            FileSizeHelper fs = new FileSizeHelper(size, path, branchName, repo.repoName, repo.projectName)
+            FileSizeHelper fs = new FileSizeHelper(size, path, branchName, repo.repoName, repo.projectName, lfsFile)
             files.add(fs)
         }
         return files
     }
+
 
     public List<FileSizeHelper> getFileListForRepo(RepoHelper rh) {
         List<FileSizeHelper> fs = []
@@ -107,7 +101,6 @@ class RepoUtils {
     }
 
     public String createCache() {
-        log.warn("createCache start")
         File f = new File(RepoConfig.cachePath)
         if (!f.exists()) {
             f.mkdirs().wait()
@@ -116,10 +109,6 @@ class RepoUtils {
         if (!f.exists()) {
             return "can't create cache{ath ${RepoConfig.cachePath}"
         }
-    }
-
-    public prepareCache() {
-        log.warn("prepareCache start")
     }
 
     public Long folderSize(File directory) {
@@ -133,5 +122,19 @@ class RepoUtils {
         return length;
     }
 
+    public void saveReportFile(String dataToSave, String fileName) {
+        File report = new File(RepoConfig.cachePath + fileName)
+        report.write(dataToSave)
+    }
+
+    public boolean reportFileExists() {
+        File f = new File(RepoConfig.cachePath)
+        if (!f.exists()) return false;
+        f = new File(RepoConfig.totalReportFile)
+        if (!f.exists()) return false;
+
+
+        return true;
+    }
 
 }

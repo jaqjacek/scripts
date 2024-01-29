@@ -1,7 +1,7 @@
-package bar.reposize.utils
+package reposize.utils
 
-import bar.reposize.config.RepoConfig
-import bar.reposize.model.FileSizeHelper
+import reposize.config.RepoConfig
+import reposize.model.FileSizeHelper
 
 class FileCSVUtils {
 
@@ -9,6 +9,7 @@ class FileCSVUtils {
         String headerString =
                 "filePath" + RepoConfig.csvDelimiter +
                         "size" + RepoConfig.csvDelimiter +
+                        "lfsFile" + RepoConfig.csvDelimiter +
                         "branch" + RepoConfig.csvDelimiter +
                         "repoName" + RepoConfig.csvDelimiter +
                         "projectName"
@@ -19,6 +20,7 @@ class FileCSVUtils {
         String resultString =
                 "${fsh.pathName}${RepoConfig.csvDelimiter}" +
                         "${fsh.size}${RepoConfig.csvDelimiter}" +
+                        "${fsh.isLfs}${RepoConfig.csvDelimiter}" +
                         "${fsh.branch}${RepoConfig.csvDelimiter}" +
                         "${fsh.repoName}${RepoConfig.csvDelimiter}" +
                         "${fsh.projectName}"

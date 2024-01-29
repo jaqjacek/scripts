@@ -1,4 +1,4 @@
-package bar.reposize.model
+package reposize.model
 
 import groovy.json.JsonBuilder
 
@@ -8,13 +8,15 @@ class FileSizeHelper {
     public String branch
     public String repoName
     public String projectName
+    public Long isLfs
 
-    FileSizeHelper(Long size, String pathName, String branch, String repoName, String projectName) {
+    FileSizeHelper(Long size, String pathName, String branch, String repoName, String projectName, Long isLfs = 0) {
         this.size = size
         this.pathName = pathName
         this.branch = branch
         this.repoName = repoName
         this.projectName = projectName
+        this.isLfs = isLfs
     }
 
     @Override

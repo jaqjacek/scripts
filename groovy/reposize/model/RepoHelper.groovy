@@ -1,4 +1,5 @@
-package bar.reposize.model
+package reposize.model
+
 import groovy.json.JsonBuilder
 
 class RepoHelper {
@@ -12,18 +13,19 @@ class RepoHelper {
     public String projectKey
     public String projectName
 
-    RepoHelper(String repoName, String repoID, String repoUrl,String projectKey, String projectName,String repoPath) {
+    RepoHelper(String repoName, String repoID, String repoUrl, String projectKey, String projectName, String repoPath) {
         this.repoName = repoName
         this.repoID = repoID
         this.repoUrl = repoUrl
         this.projectKey = projectKey
         this.projectName = projectName
-        this.repoPath=repoPath
-        totalSize='0'
-        repoSize='0'
-        lfsSize='0'
+        this.repoPath = repoPath
+        totalSize = '0'
+        repoSize = '0'
+        lfsSize = '0'
 
     }
+
     RepoHelper() {
 
     }
@@ -39,12 +41,12 @@ class RepoHelper {
     }
 
     private calculateTotal() {
-        totalSize = String.valueOf(Long.parseLong(repoSize)+Long.parseLong(lfsSize))
+        totalSize = String.valueOf(Long.parseLong(repoSize) + Long.parseLong(lfsSize))
     }
 
     @Override
     public String toString() {
-       return toJson()
+        return toJson()
     }
 
     public String toJson() {

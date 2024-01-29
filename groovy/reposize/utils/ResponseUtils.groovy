@@ -1,8 +1,8 @@
-package bar.reposize.utils
+package reposize.utils
 
-import bar.reposize.model.FileSizeHelper
-import bar.reposize.model.RepoHelper
-import com.onresolve.scriptrunner.canned.util.FileSizeUtils
+import reposize.config.RepoConfig
+import reposize.model.FileSizeHelper
+import reposize.model.RepoHelper
 
 import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.MultivaluedMap
@@ -24,7 +24,7 @@ class ResponseUtils {
         if (queryParams.containsKey("asCSVFile")) {
             File tmpFile = File.createTempFile(fileName, ".csv")
             FileOutputStream fos = new FileOutputStream(tmpFile)
-            fos.write(RepoCSVUtils.repoToCSV(rh,true).bytes)
+            fos.write(RepoCSVUtils.repoToCSV(rh, true).bytes)
             Response r = Response.ok(tmpFile, MediaType.APPLICATION_OCTET_STREAM_TYPE)
                     .entity(tmpFile)
                     .header("Content-Disposition", "attachment; filename=\"${fileName}.csv\"")
@@ -49,7 +49,7 @@ class ResponseUtils {
         if (queryParams.containsKey("asCSVFile")) {
             File tmpFile = File.createTempFile(fileName, ".csv")
             FileOutputStream fos = new FileOutputStream(tmpFile)
-            fos.write(RepoCSVUtils.repoToCSV(rhs,true).bytes)
+            fos.write(RepoCSVUtils.repoToCSV(rhs, true).bytes)
             Response r = Response.ok(tmpFile, MediaType.APPLICATION_OCTET_STREAM_TYPE)
                     .entity(tmpFile)
                     .header("Content-Disposition", "attachment; filename=\"${fileName}.csv\"")
@@ -73,7 +73,7 @@ class ResponseUtils {
             return r;
         }
         if (queryParams.containsKey("asCSVFile")) {
-            String outputString = FileCSVUtils.fileSizeToCSV(fshs,true).toString()
+            String outputString = FileCSVUtils.fileSizeToCSV(fshs, true).toString()
             File tmpFile = File.createTempFile(fileName, ".csv")
             FileOutputStream fos = new FileOutputStream(tmpFile)
             fos.write(outputString.bytes)
@@ -85,6 +85,21 @@ class ResponseUtils {
             return r;
         }
         return Response.ok(fshs).build()
+    }
+
+    public static Response getTotalReport(String reportName) {
+        RepoUtils ru = new RepoUtils();
+        if (ru.reportFileExists()) {
+            File f = new File(RepoConfig.totalReportFile)
+            Response r = Response.ok(f, MediaType.APPLICATION_OCTET_STREAM_TYPE)
+                    .entity(f)
+                    .header("Content-Disposition", "attachment; filename=\"${reportName}\"")
+                    .build()
+
+            return r;
+        }
+
+        return Response.ok('''{"error":"No report File generated"}''').build()
     }
 
 

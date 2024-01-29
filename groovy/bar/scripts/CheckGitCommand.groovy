@@ -1,5 +1,5 @@
-import bar.reposize.config.RepoConfig
-import bar.reposize.model.RepoHelper
+import reposize.config.RepoConfig
+import reposize.model.RepoHelper
 import groovy.transform.Field
 import org.apache.log4j.Logger
 

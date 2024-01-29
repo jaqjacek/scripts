@@ -1,8 +1,8 @@
-package bar.reposize.rest
+package reposize.rest
 
-import bar.reposize.config.RepoConfig
-import bar.reposize.model.RepoHelper
-import bar.reposize.utils.RepoUtils
+import reposize.config.RepoConfig
+import reposize.model.RepoHelper
+import reposize.utils.RepoUtils
 import com.atlassian.bitbucket.project.Project
 import com.atlassian.bitbucket.project.ProjectService
 import com.atlassian.bitbucket.repository.Repository
