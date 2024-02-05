@@ -27,7 +27,7 @@ import javax.ws.rs.core.Response
 @Field String script_api_key="12345678910"
 @BaseScript CustomEndpointDelegate delegate
 getRevInfo(
-        httpMethod: "GET", groups: ["G_Atlassian-Scriptrunner-API-Users","G_Atlassian-Admins","G_Atlassian-Scriptrunner-API-Users","RndPasAll"]
+        httpMethod: "GET", groups: ["G_Atlassian-Scriptrunner-API-Users","G_Atlassian-Admins","RndPasAll"]
 ) { MultivaluedMap queryParams, String body ->
 
     /*
@@ -107,13 +107,12 @@ getRevInfoTezt(
 }
 
 List<ResultASresman> getASresManForParams(String material, String version) {
-    String rawSQL = """component = "__material__" and fixVersion = "__version__"   and category in ("RnD Product Room", "RnD Project Room", "RnD Service Room") """
+    String rawSQL = """component = "__material__" and fixVersion = "__version__"  and  category in ("RnD Product Room", "RnD Project Room", "RnD Service Room", "DevOps") and Publish = Yes  ORDER BY created DESC"""
     rawSQL = rawSQL.replace("__material__",material).replace("__version__",version)
     def issues = Issues.searchOverrideSecurity(rawSQL)
     List<ResultASresman> results = []
     while (issues.hasNext()) {
         results.add(new ResultASresman(issues.next(),material,version))
-        break
     }
     return  results
 }
@@ -127,10 +126,10 @@ String getDummyString(String material,String version) {
     "firmwareChanged":false,
     "channelDescriptionChanged":false,
     "configurationDescriptionChanged":false,
-    "titleDE":"titleDE",
-    "detailsDE":"detailsDE",
-    "titleEN":"titleEN",
-    "detailsEN":"detailsEN",
+    "shortTextDE":"shortTextDE",
+    "longTextDE":"longTextDE",
+    "shortTextEN":"titleEN",
+    "longTextEN":"longTextEN",
     "issueKey":"AAA-4"
 },
 {
@@ -139,13 +138,13 @@ String getDummyString(String material,String version) {
     "firmwareChanged":false,
     "channelDescriptionChanged":false,
     "configurationDescriptionChanged":false,
-    "titleDE":"titleDE2",
-    "detailsDE":"detailsDE2
+    "shortTextDE":"shortTextDE2",
+    "longTextDE":"longTextDE2
     line
     break
     normal",
     "titleEN":"titleEN2",
-    "detailsEN":"detailsEN2",
+    "longTextEN":"longTextEN2",
     "issueKey":"AAA-5"
 },
 {
@@ -154,14 +153,14 @@ String getDummyString(String material,String version) {
     "firmwareChanged":false,
     "channelDescriptionChanged":false,
     "configurationDescriptionChanged":false,
-    "titleDE":"titleDE3",
-    "detailsDE":"detailsDE3",
+    "shortTextDE":"shortTextDE3",
+    "longTextDE":"longTextDE3",
     "titleEN":"titleEN3
     line
     break
     \n
     slash n",
-    "detailsEN":"detailsEN3",
+    "longTextEN":"longTextEN3",
     "issueKey":"AAA-6"
 }
 ]
