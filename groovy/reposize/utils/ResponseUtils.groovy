@@ -93,7 +93,7 @@ class ResponseUtils {
             File f = new File(RepoConfig.totalReportFile)
             Response r = Response.ok(f, MediaType.APPLICATION_OCTET_STREAM_TYPE)
                     .entity(f)
-                    .header("Content-Disposition", "attachment; filename=\"${reportName}\"")
+                    .header("Content-Disposition", "attachment; filename=\"${reportName}.csv\"")
                     .build()
 
             return r;

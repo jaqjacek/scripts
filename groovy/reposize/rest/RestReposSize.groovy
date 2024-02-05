@@ -18,6 +18,7 @@ import groovy.transform.BaseScript
 
 import javax.ws.rs.core.MultivaluedMap
 import javax.ws.rs.core.Response
+import java.text.SimpleDateFormat
 
 
 /*
@@ -58,7 +59,7 @@ getForRepo(
         Repository repository = repositoryService.getById(Integer.parseInt(rawID))
         RepoUtils ru = new RepoUtils()
         RepoHelper rh = ru.createRepoHelper(repository)
-        return ResponseUtils.getResponseByParams(queryParams, [rh], repository.name + "_" + repository.id)
+        return ResponseUtils.getResponseByParams(queryParams, [rh],RepoConfig.repositoryReportNamePrefix+"-"+ repository.name)
     }
     return Response.ok("""{"error":"Please add parameter to this url .../rest/scriptrunner/latest/custom/getForRepo?repoid=1   """).build()
 }
@@ -82,7 +83,7 @@ getForProject(
             repos.add(rh)
         }
 
-        return ResponseUtils.getResponseByParams(queryParams, repos, project.name)
+        return ResponseUtils.getResponseByParams(queryParams, repos, RepoConfig.projectReportNamePrefix+"-"+project.name)
     }
 
     return Response.ok("""{"error":"Please add parameter to this url .../rest/scriptrunner/latest/custom/getForProject?projectid"} """).build()
@@ -92,7 +93,8 @@ getForProject(
 downloadTotalReport(
         httpMethod: "GET", groups: RepoConfig.rest_allowed_groups
 ) { MultivaluedMap queryParams, String body ->
-    return ResponseUtils.getTotalReport("total.csv")
+    String currentDateString = (new SimpleDateFormat(RepoConfig.dateFormat)).format(new Date())
+    return ResponseUtils.getTotalReport(RepoConfig.totalReportNamePrefix+"-"+currentDateString)
 }
 
 
@@ -107,7 +109,7 @@ getFilesForRepo(
         RepoUtils ru = new RepoUtils()
         RepoHelper rh = ru.createRepoHelper(repository)
         List<FileSizeHelper> fss = ru.getFileListForRepo(rh)
-        return ResponseUtils.getFilesResponseByParams(queryParams, fss, repository.name + "_" + repository.id)
+        return ResponseUtils.getFilesResponseByParams(queryParams, fss,RepoConfig.repositoryFilesReportNamePrefix+"-"+rh.repoName)
 
     }
     return Response.ok("""{"error":"Please add parameter to this url .../rest/scriptrunner/latest/custom/getFilesForRepo?repoid=1 "}  """).build()
@@ -134,7 +136,7 @@ getFilesForProject(
         }
 
 
-        return ResponseUtils.getFilesResponseByParams(queryParams, projectFss, project.name + "_" + project.id)
+        return ResponseUtils.getFilesResponseByParams(queryParams, projectFss, RepoConfig.projectFilesReportNamePrefix+"-"+project.name)
     }
 
     return Response.ok("""{"error":"Please add parameter to this url .../rest/scriptrunner/latest/custom/getFilesForProject?projectid"} """).build()

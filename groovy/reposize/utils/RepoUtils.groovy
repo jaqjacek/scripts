@@ -39,12 +39,39 @@ class RepoUtils {
         repo.setLFSSize(lfsSize.toString())
     }
 
+    public void getSingleLFSFileSize(RepoHelper repo, File) {
+
+        String cmd = """git --git-dir=${repo.repoPath} log -p  """
+        def p = cmd.execute()
+        List<String> lines = p.inputStream.readLines()
+
+        Long lfsSize = 0
+        for (int i = 0; i < lines.size(); i++) {
+            if (lines[i].contains("oid sha256")) {
+                lfsSize += getSizeFromLine(lines[i + 1])
+            }
+        }
+        repo.setLFSSize(lfsSize.toString())
+    }
 
     Long getSizeFromLine(String rawLine) {
         if (rawLine.startsWith("+size")) {
             return Long.parseLong(rawLine.split(" ")[1])
         }
         return 0L;
+    }
+
+    public void setLFSFileSize(RepoHelper rh, FileSizeHelper fsh) {
+        String rawCMD = """git --git-dir=${rh.repoPath} log -p  ${fsh.branch} -- ${fsh.pathName}  """
+        String result = rawCMD.execute().text
+        List<String> lines = result.split("\n").reverse().toList()
+        RepoUtils ru = new RepoUtils()
+        if (lines.size() > 0) {
+            Long newSize = ru.getSizeFromLine(lines[0])
+            if (newSize > 0) {
+                fsh.size = newSize
+            }
+        }
     }
 
     public List<String> getBranches(RepoHelper repo) {
@@ -67,8 +94,8 @@ class RepoUtils {
         return lines[0]
     }
 
-    public List<FileSizeHelper> getFilesListWithPath(RepoHelper repo, String commitsha, String branchName = "") {
-        String cmd = """git --git-dir=${repo.repoPath} ls-tree -r -l ${commitsha}"""
+    public List<FileSizeHelper> getFilesListWithPath(RepoHelper rh, String commitsha, String branchName = "") {
+        String cmd = """git --git-dir=${rh.repoPath} ls-tree -r -l ${commitsha}"""
         def p = cmd.execute()
         List<String> lines = p.inputStream.readLines()
 
@@ -83,8 +110,11 @@ class RepoUtils {
             Long lfsFile = size == 132 || size == 133 ? 1 : 0;
 
             String path = lines[i].split(parts[3] + "\t")[1]
-            FileSizeHelper fs = new FileSizeHelper(size, path, branchName, repo.repoName, repo.projectName, lfsFile)
-            files.add(fs)
+            FileSizeHelper fsh = new FileSizeHelper(size, path, branchName, rh.repoName, rh.projectName, lfsFile)
+            if (lfsFile) {
+                setLFSFileSize(rh, fsh)
+            }
+            files.add(fsh)
         }
         return files
     }
@@ -94,21 +124,22 @@ class RepoUtils {
         List<FileSizeHelper> fs = []
         List<String> branches = getBranches(rh)
         for (String branchName : branches) {
-            String commitsha = getLatestCommitForBranch(rh, branchName)
-            fs.addAll(getFilesListWithPath(rh, commitsha, branchName))
+            String commitSHA = getLatestCommitForBranch(rh, branchName)
+            fs.addAll(getFilesListWithPath(rh, commitSHA, branchName))
         }
         return fs
     }
 
-    public String createCache() {
+    public static String createCache() {
         File f = new File(RepoConfig.cachePath)
         if (!f.exists()) {
-            f.mkdirs().wait()
+            f.mkdirs().wait(30)
         }
 
         if (!f.exists()) {
             return "can't create cache{ath ${RepoConfig.cachePath}"
         }
+        return "ok"
     }
 
     public Long folderSize(File directory) {

@@ -1,4 +1,8 @@
 package reposize.cron
+
+import groovy.transform.Field
+import org.apache.log4j.Logger
+
 /*
 Script class that/s is called by cron or others methods
 its run full process for whole bitbucket
@@ -21,10 +25,11 @@ import java.text.SimpleDateFormat
 
 class GenerateTotalReport {
 
-    GenerateTotalReport() {
-    }
-
-    public static void run() {
+    public static String  run() {
+      Logger log = Logger.getLogger("GenerateTotalReport: ")
+        if(RepoUtils.createCache() != "ok") {
+             return  "no cache dir !!! ${RepoConfig.cachePath}"
+        }
         def repositoryService = ComponentLocator.getComponent(RepositoryService)
         def projectService = ComponentLocator.getComponent(ProjectService)
         def page = new PageRequestImpl(0, PageRequest.MAX_PAGE_LIMIT)
@@ -36,19 +41,22 @@ class GenerateTotalReport {
             Project project = projectService.getByKey(projectKey)
 
             Page<Repository> repositories = repositoryService.findByProjectKey(project.key, page)
-            for (Repository repository : repositories.getValues()) {
+            List<Repository> reposz = repositories.getValues().toList()
+            reposz.forEach {  repository ->
                 RepoHelper rh = ru.createRepoHelper(repository)
                 List<FileSizeHelper> fss = ru.getFileListForRepo(rh)
                 projectFss.addAll(fss)
             }
         }
         Date d = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd")
+        SimpleDateFormat sdf = new SimpleDateFormat(RepoConfig.dateFormat)
         String reportName = "total_" + sdf.format(d) + ".csv"
         File report = new File(RepoConfig.cachePath + reportName)
         String output = FileCSVUtils.fileSizeToCSV(projectFss, true)
         ru.saveReportFile(output, reportName)
         ru.saveReportFile(output, RepoConfig.totalReportFile.replace(RepoConfig.cachePath, ""))
         report.write(output)
+        return report.size();
+
     }
 }
